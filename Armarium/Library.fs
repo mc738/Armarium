@@ -2,6 +2,7 @@
 
 open System
 open System.IO
+open FsToolbox.Core
 open FsToolbox.Core.Results
 
 [<RequireQualifiedAccess>]
@@ -101,6 +102,7 @@ type FileReadError =
     | SchemeNotFound of SchemeName: string
     | UriError of Message: string
     | UnhandledException of exn
+    | Failure of FailureResult
 
     member fre.ToFailure(?displayMessageOverride: string) =
         match fre with
@@ -129,7 +131,7 @@ type FileReadError =
                DisplayMessage = displayMessageOverride |> Option.defaultValue "File could not be read."
                Exception = Some exn }
             : FailureResult)
-
+        | Failure f -> f
 
 [<RequireQualifiedAccess>]
 module FileReadError =
@@ -145,6 +147,7 @@ type FileWriteError =
     | SchemeNotFound of SchemeName: string
     | UriError of Message: string
     | UnhandledException of exn
+    | Failure of FailureResult
 
     member fwe.ToFailure(?displayMessageOverride: string) =
         match fwe with
@@ -173,6 +176,7 @@ type FileWriteError =
                DisplayMessage = displayMessageOverride |> Option.defaultValue "File could not be saved."
                Exception = Some exn }
             : FailureResult)
+        | Failure f -> f
 
 [<RequireQualifiedAccess>]
 module FileWriteError =
