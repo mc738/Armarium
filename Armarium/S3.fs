@@ -71,7 +71,7 @@ module S3 =
            WriteAllBytes = Internal.writeAllBytes }
         : FileHandler)
         
-    let createReadArgs (accessKey: string) ()
+    let createReadArgs (accessKey: string) () = ()
         
     let reusableFileHandler =
         ({ AllowAnonymousReadAccess = false
