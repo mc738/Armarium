@@ -297,14 +297,20 @@ type FileRepository =
                 |> Option.map (fun fso -> fso.OpenRead args uri.LocalPath)
                 |> Option.defaultWith (fun _ ->
                     match File.Exists uri.LocalPath with
-                    | true -> File.OpenRead uri.LocalPath :> Stream |> Ok
+                    | true ->
+                        // TODO check local path is correct
+                        File.OpenRead uri.LocalPath :> Stream |> Ok
                     | false -> FileReadError.FileNotExists(uri.Scheme, uri.LocalPath) |> Error)
             | false ->
                 fr.Handlers.TryFind uri.Scheme
                 |> Option.map (fun fh ->
                     match args.Credentials.IsAnonymous(), fh.AllowAnonymousReadAccess with
-                    | false, _ -> fh.OpenRead args uri.LocalPath
-                    | true, true -> fh.OpenRead args uri.LocalPath
+                    | false, _ ->
+                        // TODO check local path is correct
+                        fh.OpenRead args uri.LocalPath
+                    | true, true ->
+                        // TODO check local path is correct
+                        fh.OpenRead args uri.LocalPath
                     | true, false -> FileReadError.AnonymousReadAccessNotSupported uri.Scheme |> Error)
                 |> Option.defaultWith (fun _ -> FileReadError.SchemeNotFound uri.Scheme |> Error)
         with exn ->
