@@ -333,7 +333,9 @@ type FileRepository =
                 |> Option.defaultWith (fun _ ->
                     match File.Exists uri.LocalPath, args.Overwrite with
                     | true, true
-                    | false, _ -> File.WriteAllBytes(uri.LocalPath, bytes) |> Ok
+                    | false, _ ->
+                        // TODO check local path is correct
+                        File.WriteAllBytes(uri.LocalPath, bytes) |> Ok
                     | true, false -> FileWriteError.FileAlreadyExists(uri.Scheme, uri.LocalPath) |> Error)
             | false ->
                 fr.Handlers.TryFind uri.Scheme

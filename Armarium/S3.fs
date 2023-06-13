@@ -82,6 +82,8 @@ module S3 =
                 ms.ToArray())
 
         let writeAllBytesReusableOp (cfg: S3Config) (writesArgs: FileWriteOperationArguments) (path: string) (data: byte array) =
+            
+            
             let ctx = new S3Context(cfg)
             use ms = new MemoryStream(data)
 
