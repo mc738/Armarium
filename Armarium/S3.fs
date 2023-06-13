@@ -46,7 +46,7 @@ module S3 =
 
                 ms.ToArray())
 
-        let writeAllBytes (writesArgs: FileWriteOperationArguments) (path: string) (data: byte array) =
+        let writeAllBytesOneTimeOp (writesArgs: FileWriteOperationArguments) (path: string) (data: byte array) =
             let cfg =
                 ({ AccessKey = writesArgs.Credentials.Username |> Option.defaultValue ""
                    SecretKey = writesArgs.Credentials.Password |> Option.defaultValue ""
@@ -68,7 +68,7 @@ module S3 =
            AllowAnonymousWriteAccess = false
            ReadAllBytes = Internal.readAllBytesOneTimeOp
            OpenRead = Internal.openReadOneTimeOp
-           WriteAllBytes = Internal.writeAllBytes }
+           WriteAllBytes = Internal.writeAllBytesOneTimeOp }
         : FileHandler)
         
     let createReadArgs (accessKey: string) () = ()
@@ -80,3 +80,5 @@ module S3 =
            OpenRead = Internal.openReadOneTimeOp
            WriteAllBytes = Internal.writeAllBytes }
         : FileHandler)
+
+    
