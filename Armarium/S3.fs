@@ -62,6 +62,34 @@ module S3 =
                 // TODO check
                 Ok()
             | Error f -> FileWriteError.Failure f |> Error
+            
+        let openReadReusableOp (cfg: S3Config) (readArgs: FileReadOperationArguments) (uri: string) =
+            let ctx = new S3Context(cfg)
+
+            getStream ctx "" ""
+
+        let readAllBytesReusableOp (cfg: S3Config) (readArgs: FileReadOperationArguments) (uri: string) =
+            
+
+            let ctx = new S3Context(cfg)
+
+            getStream ctx "" ""
+            |> Result.map (fun s ->
+                use ms = new MemoryStream()
+
+                s.CopyTo(ms)
+
+                ms.ToArray())
+
+        let writeAllBytesReusableOp (cfg: S3Config) (writesArgs: FileWriteOperationArguments) (path: string) (data: byte array) =
+            let ctx = new S3Context(cfg)
+            use ms = new MemoryStream(data)
+
+            match ctx.SaveStream("", "", ms) with
+            | Ok status ->
+                // TODO check
+                Ok()
+            | Error f -> FileWriteError.Failure f |> Error
 
     let oneTimeFileHandler =
         ({ AllowAnonymousReadAccess = false
@@ -73,12 +101,12 @@ module S3 =
         
     let createReadArgs (accessKey: string) () = ()
         
-    let reusableFileHandler =
+    let reusableFileHandler (cfg: S3Config) =
         ({ AllowAnonymousReadAccess = false
            AllowAnonymousWriteAccess = false
-           ReadAllBytes = Internal.readAllBytesOneTimeOp
-           OpenRead = Internal.openReadOneTimeOp
-           WriteAllBytes = Internal.writeAllBytes }
+           ReadAllBytes = Internal.readAllBytesReusableOp cfg
+           OpenRead = Internal.openReadReusableOp cfg
+           WriteAllBytes = Internal.writeAllBytesReusableOp cfg }
         : FileHandler)
 
     
