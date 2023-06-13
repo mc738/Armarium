@@ -344,7 +344,9 @@ type FileRepository =
                     | false, _ ->
                         // TODO check local path is correct
                         fh.WriteAllBytes args uri.LocalPath bytes
-                    | true, true -> fh.WriteAllBytes args uri.LocalPath bytes
+                    | true, true ->
+                        // TODO check local path is correct
+                        fh.WriteAllBytes args uri.LocalPath bytes
                     | true, false -> FileWriteError.AnonymousWriteAccessNotSupported uri.Scheme |> Error)
                 |> Option.defaultWith (fun _ -> FileWriteError.SchemeNotFound uri.Scheme |> Error)
         with exn ->
