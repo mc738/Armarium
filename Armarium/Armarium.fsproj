@@ -6,13 +6,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Library.fs" />
-        <Compile Include="S3.fs" />
+        <Compile Include="Library.fs"/>
+        <Compile Include="S3.fs"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FsToolbox" Version="0.6.0" />
-      <PackageReference Include="FsToolbox.S3" Version="0.5.0" />
+        <PackageReference Include="FsToolbox" Version="0.6.0"/>
+        <PackageReference Include="FsToolbox.S3" Version="0.5.0"/>
     </ItemGroup>
 
 </Project>
